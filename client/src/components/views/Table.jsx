@@ -14,19 +14,19 @@ const TableEmployees = function (props) {
           <th>#</th>
           <th onClick={(e) => props.sorter("name")} className="point">
             <span style={{ paddingRight: 5 + "px" }}>Имя</span>
-            {props.state.sortedName && (
+            {props.state.name && (
               <FontAwesomeIcon icon={faSortAmountDownAlt}></FontAwesomeIcon>
             )}
-            {!props.state.sortedName && (
+            {!props.state.name && (
               <FontAwesomeIcon icon={faSortAmountUp}></FontAwesomeIcon>
             )}
           </th>
           <th onClick={(e) => props.sorter("birthday")} className="point">
             <span style={{ paddingRight: 5 + "px" }}>Дата рождения</span>
-            {props.state.sortedBDay && (
+            {props.state.birthday && (
               <FontAwesomeIcon icon={faSortAmountDownAlt}></FontAwesomeIcon>
             )}
-            {!props.state.sortedBDay && (
+            {!props.state.birthday && (
               <FontAwesomeIcon icon={faSortAmountUp}></FontAwesomeIcon>
             )}
           </th>

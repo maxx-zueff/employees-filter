@@ -81,6 +81,24 @@ module.exports.getEvery = function (req, res, next) {
   });
 }
 
+module.exports.getOne = function (req, res, next) {
+  Employee.findById(req.body.id, function (err, employee) {
+    if (err)
+      return next({
+        code: err.code,
+        message: err.message,
+      });
+
+    if (employee == null || employee.length == 0)
+      return next({
+        message: "Ничего не нашёл",
+      });
+
+    res.status(200);
+    res.json(employee);
+  })
+}
+
 module.exports.filterByRole = function (req, res, next) {
   Employee.find({ role: req.body.role }, function (err, employees) {
     if (err)

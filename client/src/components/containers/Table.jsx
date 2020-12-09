@@ -124,7 +124,7 @@ class App extends React.Component {
   }
 
   link(id) {
-    this.props.history.push(id)
+    this.props.history.push(`/employees/${id}`)
   }
 
   render() {

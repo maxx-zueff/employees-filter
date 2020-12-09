@@ -19,3 +19,7 @@
 # curl -X GET \
 #     localhost:5000/find-every-employee
 #     
+
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"id": "5fc57cfac32b320fb0273ab7"}' \
+    localhost:5000/get-employee
