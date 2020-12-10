@@ -22,6 +22,8 @@ import Container from "react-bootstrap/Container";
 import { connect } from "react-redux";
 import store from "../../store";
 import { withRouter} from "react-router-dom";
+import {getId, getName, getRole, getRoleRu, getPhone, getBirthday, getArchive} from "../../action/profile"
+
 
 class App extends React.Component {
   constructor() {
@@ -123,8 +125,18 @@ class App extends React.Component {
     );
   }
 
-  link(id) {
-    this.props.history.push(`/employees/${id}`)
+  link(path) {
+    this.props.history.push(path)
+
+    if (path === "/new") {
+      store.dispatch(getId(""))
+      store.dispatch(getName(""))
+      store.dispatch(getRole(""))
+      store.dispatch(getRoleRu(""))
+      store.dispatch(getPhone(""))
+      store.dispatch(getBirthday(""))
+      store.dispatch(getArchive(""))
+    }
   }
 
   render() {
@@ -136,7 +148,11 @@ class App extends React.Component {
             showRole={this.showRole}
             showArchived={this.showArchived}
           />
-          <Table state={this.props} sorter={this.sorter} link={this.link}/>
+          <Table
+            state={this.props}
+            sorter={this.sorter}
+            link={this.link}
+          />
         </Container>
       </div>
     );
@@ -155,6 +171,7 @@ const mapStateToProps = function (store) {
     selected_role: store.filterState.selected_role,
     name: store.sorterState.name,
     birthday: store.sorterState.birthday,
+
   };
 };
 

@@ -47,4 +47,11 @@ export function getArchive(isArchive) {
   };
 }
 
+export function setEnable(isEnable) {
+  return {
+    type: "SET_ENABLE",
+    isEnable
+  };
+}
+
 

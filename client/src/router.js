@@ -16,6 +16,9 @@ export default (
 				<Route path="/employees/:id">
 					<EmployeeContainer />
 				</Route>
+				<Route path="/new">
+					<EmployeeContainer />
+				</Route>
 		</MainLayout>
 	</Router>
 )

@@ -5,7 +5,8 @@ const initState = {
   role_ru: "",
   phone: "",
   birthday: "",
-  isArchive: ""
+  isArchive: "",
+  isEnable: false
 };
 
 const profileReducer = function (state = initState, action) {
@@ -24,6 +25,8 @@ const profileReducer = function (state = initState, action) {
 			return {...state, birthday: action.birthday}
 		case "GET_ARCHIVE":
 			return {...state, isArchive: action.isArchive}
+		case "SET_ENABLE":
+			return {...state, isEnable: action.isEnable}				
 	}
 
 	return state;

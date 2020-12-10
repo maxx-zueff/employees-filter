@@ -11,7 +11,7 @@ import InputMask from 'react-input-mask';
 const Employee = function (props) {
   return (
   	<Container fluid="md" style={{paddingTop: 30 + "px"}}>
-	  	<Form>
+	  	<Form onSubmit={props.handleSubmit}>
 	  		<Form.Row className="formRow">
 	  			<Form.Group as={Col}>
 	  				<Form.Label>Имя сотрудника</Form.Label>
@@ -56,7 +56,7 @@ const Employee = function (props) {
 	  			</Form.Group>
 	  		</Form.Row>
 
-	  		 <Button onClick={props.onSubmit} variant="primary">Обновить данные</Button>
+	  		 <Button onClick={props.onSubmit} disabled={!props.isEnable} variant="primary">Готово!</Button>
 	  	</Form>
   	</Container>
   )

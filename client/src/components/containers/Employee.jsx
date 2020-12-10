@@ -3,12 +3,18 @@ import { connect } from "react-redux";
 import store from "../../store";
 import { withRouter} from "react-router-dom";
 import callAPI from "../../libs/api";
-import {getEmployee, getRoles} from "../../action/employee"
+import {getRoles} from "../../action/employee"
 import {getId, getName, getRole, getRoleRu, getPhone, getBirthday, getArchive} from "../../action/profile"
 import Employee from "../views/Employee"
 import getRoleName from "../../libs/utils";
 
-class EmployeeContainer extends React.Component {
+function validate(fields) {
+	let empty = fields.filter(element => element.length === 0)
+	if (empty.length === 0) return true
+		else return false
+}
+
+class EmployeeContainer extends React.PureComponent {
 
 	constructor(props){  
 		super(props)
@@ -21,18 +27,28 @@ class EmployeeContainer extends React.Component {
 	} 
 	componentDidMount() {
 		const { id } = this.props.match.params;
-		callAPI("/get-employee", "post", {id: id}).then((body) => {
 
-		let employee = body.data;
-        if (employee.role !== undefined) employee.role_ru = getRoleName(employee.role)
+		if (id) {
 
-		store.dispatch(getId(employee._id))
-		store.dispatch(getName(employee.name))
-		store.dispatch(getRole(employee.role))
-		store.dispatch(getRoleRu(employee.role_ru))
-		store.dispatch(getPhone(employee.phone))
-		store.dispatch(getBirthday(employee.birthday))
-		store.dispatch(getArchive(employee.isArchive))
+			callAPI("/get-employee", "post", {id: id}).then((body) => {
+
+			let employee = body.data;
+	        if (employee.role !== undefined) employee.role_ru = getRoleName(employee.role)
+
+			store.dispatch(getId(id))
+			store.dispatch(getName(employee.name))
+			store.dispatch(getRole(employee.role))
+			store.dispatch(getRoleRu(employee.role_ru))
+			store.dispatch(getPhone(employee.phone))
+			store.dispatch(getBirthday(employee.birthday))
+			store.dispatch(getArchive(employee.isArchive))
+
+
+
+		}) } else {
+				store.dispatch(getRoleRu("Выбрать должность"))
+			}
+
 		store.dispatch(getRoles([
 			{
 				name: "driver",
@@ -49,9 +65,6 @@ class EmployeeContainer extends React.Component {
 		]))
 
 
-		})
-
-
 	}
 
 	onChangeName(e) {
@@ -63,7 +76,6 @@ class EmployeeContainer extends React.Component {
 		let role_ru = getRoleName(role)
 		store.dispatch(getRole(role))
 		store.dispatch(getRoleRu(role_ru))
-		console.log(store.getState())
 	}
 
 	onChangePhone(e) {
@@ -82,22 +94,46 @@ class EmployeeContainer extends React.Component {
 	}
 
 	onSubmit(e) {
+
+		console.log('here')
+
 		let employee = {};
-		employee.id = this.props.id
 		employee.name = this.props.name
 		employee.role = this.props.role
 		employee.phone = this.props.phone
 		employee.birthday = this.props.birthday
 		employee.isArchive = this.props.isArchive
 
-		callAPI("/update-employee", "post", employee).then((body) => {
-			if (body.data) this.props.history.push("/")
-		})
+		if (this.props.id) {
+			employee.id = this.props.id
+			callAPI("/update-employee", "post", employee).then((body) => {
+				if (body.data) this.props.history.push("/")
+			})
+		}
+
+		if (!this.props.id) {
+
+			callAPI("/add-employee", "post", employee).then((body) => {
+				this.props.history.push("/")
+			}).catch((err) => {
+		        console.log(err);
+		    })
+		}
 
 	}
+
 	render() {
+
+		const fields = [
+			this.props.name,
+			this.props.role,
+			this.props.phone,
+			this.props.birthday
+		]
+		const isEnable = validate(fields)
 		return(
 			<Employee
+				isEnable={isEnable}
 				state={this.props}
 				onChangeName = {this.onChangeName}
 				onChangeRole = {this.onChangeRole}
@@ -105,6 +141,7 @@ class EmployeeContainer extends React.Component {
 				onChangeBirtday = {this.onChangeBirtday}
 				onChangeArchive = {this.onChangeArchive}
 				onSubmit = {this.onSubmit}
+				handleSubmit={this.handleSubmit}
 			/>
 		)
 	}
@@ -120,7 +157,6 @@ const mapStateToProps = function(store) {
   	birthday: store.profileState.birthday,
   	isArchive: store.profileState.isArchive,
   	id: store.profileState.id,
-
   	roles: store.employeeState.roles,
     employee: store.employeeState.employee,
     employees: store.employeeState.employees

@@ -5,9 +5,12 @@ import {
   faSortAmountUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from 'react-router-dom'
+import Button from "react-bootstrap/Button"
+
 
 const TableEmployees = function (props) {
   return (
+    <>
     <Table striped bordered hover>
       <thead>
         <tr>
@@ -40,7 +43,7 @@ const TableEmployees = function (props) {
       </thead>
       <tbody>
         {props.state.filtered.map((employee, index) => (
-          <tr className="point " onClick={(e) => props.link(employee._id)}>
+          <tr className="point " onClick={(e) => props.link(`/employees/${employee._id}`)}>
             <td>{index}</td>
             <td>{employee.name}</td>
             <td>{employee.birthday}</td>
@@ -51,6 +54,9 @@ const TableEmployees = function (props) {
         ))}
       </tbody>
     </Table>
+
+    <Button onClick={(e) => props.link("/new")} variant="primary">Добавить сотрудника</Button>
+    </>
   );
 };
 
