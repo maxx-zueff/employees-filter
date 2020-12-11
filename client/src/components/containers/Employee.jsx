@@ -4,7 +4,7 @@ import store from "../../store";
 import { withRouter} from "react-router-dom";
 import callAPI from "../../libs/api";
 import {getRoles} from "../../action/employee"
-import {getId, getName, getRole, getRoleRu, getPhone, getBirthday, getArchive} from "../../action/profile"
+import {setEnable, getId, getName, getRole, getRoleRu, getPhone, getBirthday, getArchive} from "../../action/profile"
 import Employee from "../views/Employee"
 import getRoleName from "../../libs/utils";
 
@@ -130,7 +130,10 @@ class EmployeeContainer extends React.PureComponent {
 			this.props.phone,
 			this.props.birthday
 		]
-		const isEnable = validate(fields)
+		let isEnable = validate(fields)
+		if (this.props.phone.length !== 17) isEnable = false 
+		if (this.props.birthday.length !== 10) isEnable = false
+
 		return(
 			<Employee
 				isEnable={isEnable}
@@ -159,7 +162,8 @@ const mapStateToProps = function(store) {
   	id: store.profileState.id,
   	roles: store.employeeState.roles,
     employee: store.employeeState.employee,
-    employees: store.employeeState.employees
+    employees: store.employeeState.employees,
+    isEnable: store.profileState.isEnable
   };
 };
 

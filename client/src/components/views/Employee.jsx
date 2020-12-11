@@ -33,11 +33,11 @@ const Employee = function (props) {
 	  		<Form.Row className="formRow">
 	  			<Form.Group as={Col}>
 	  				<Form.Label>Телефон сотрудника</Form.Label>
-	  				<InputMask onChange={props.onChangePhone} value={props.state.phone} className="form-control" mask="+7\ (999) 999-9999"/>
+	  				<InputMask maskChar={null} onChange={props.onChangePhone} value={props.state.phone} className="form-control" mask="+7\ (999) 999-9999"/>
 	  			</Form.Group>
 	  			<Form.Group as={Col}>
 	  				<Form.Label>День рождения</Form.Label>
-	  				<InputMask onChange={props.onChangeBirtday} value={props.state.birthday} className="form-control" mask="99.99.9999" />
+	  				<InputMask maskChar={null} onChange={props.onChangeBirtday} value={props.state.birthday} className="form-control" mask="99.99.9999" />
 	  			</Form.Group>
 	  		</Form.Row>
 
